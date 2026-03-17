@@ -1,0 +1,45 @@
+name: netplay
+description: Juego educativo de redes
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.19.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Guardado de progreso
+  shared_preferences: ^2.2.2
+
+  # Sonidos
+  audioplayers: ^5.2.1
+
+  # Animación de victoria
+  confetti: ^0.7.0
+
+  # Iconos iOS
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+
+    # Música general del juego
+    - assets/music.mp3
+
+    # Sonidos del ahorcado
+    - assets/victory.mp3
+    - assets/game_over.mp3
+
+    # Assets del juego Network Master
+    - assets/network_master/images/
+    - assets/network_master/sounds/
