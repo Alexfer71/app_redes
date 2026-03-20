@@ -16,37 +16,61 @@ class DeviceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final label = count == null ? type.label : '${type.label} x$count';
+
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: compact ? 8 : 12,
-        horizontal: compact ? 10 : 14,
+        vertical: compact ? 10 : 14,
+        horizontal: compact ? 12 : 16,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.black12),
+        borderRadius: BorderRadius.circular(22),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, Color(0xFFF8FAFC)],
+        ),
+        border: Border.all(color: const Color(0x140F172A)),
         boxShadow: const [
           BoxShadow(
-            blurRadius: 10,
-            offset: Offset(0, 6),
-            color: Color(0x14000000),
+            blurRadius: 14,
+            offset: Offset(0, 8),
+            color: Color(0x120F172A),
           ),
         ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            type.assetPath,
-            width: compact ? 20 : 26,
-            height: compact ? 20 : 26,
-            errorBuilder: (_, __, ___) => Icon(type.icon, size: compact ? 18 : 22),
+          Container(
+            width: compact ? 34 : 42,
+            height: compact ? 34 : 42,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFFEEF2FF), Color(0xFFE0F2FE)],
+              ),
+            ),
+            child: Center(
+              child: Image.asset(
+                type.assetPath,
+                width: compact ? 18 : 24,
+                height: compact ? 18 : 24,
+                errorBuilder: (_, __, ___) => Icon(
+                  type.icon,
+                  size: compact ? 18 : 22,
+                  color: const Color(0xFF4F46E5),
+                ),
+              ),
+            ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Text(
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w900,
+                  color: const Color(0xFF0F172A),
                 ),
           ),
         ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../data/game_data.dart';
 import '../../widgets/app_background.dart';
-
 import '../../games/quiz/quiz_screen.dart';
 import '../../games/match/match_screen.dart';
 import '../../games/hangman/hangman_screen.dart';
@@ -22,8 +21,23 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text("Centro de Juegos"),
+        backgroundColor: const Color(0xFFF8FAFC),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: Colors.transparent,
+        title: const Text(
+          "Centro de Juegos",
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Color(0xFF0F172A),
+        ),
         actions: [
           IconButton(
             tooltip: "Inicio",
@@ -39,88 +53,101 @@ class _MenuScreenState extends State<MenuScreen> {
           children: [
             _stats(context),
             const SizedBox(height: 18),
-
-            /// JUEGO 1
-            _gameCard(
-              context,
-              icon: Icons.shield_rounded,
-              title: "Juego 1: Red en Peligro",
-              subtitle: "Responde rápido y suma puntos",
-              record: bestQuiz,
-              gradient: const [Color(0xFF3B82F6), Color(0xFF8B5CF6)],
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const QuizScreen()),
-                );
-                if (mounted) setState(() {});
-              },
+            Expanded(
+              child: ListView(
+                children: [
+                  _gameCard(
+                    context,
+                    icon: Icons.shield_rounded,
+                    title: "Red en Peligro",
+                    subtitle: "Responde rápido y protege la red",
+                    badge: "Quiz",
+                    record: bestQuiz,
+                    gradient: const [
+                      Color(0xFF2563EB),
+                      Color(0xFF7C3AED),
+                    ],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const QuizScreen()),
+                      );
+                      if (mounted) setState(() {});
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  _gameCard(
+                    context,
+                    icon: Icons.category_rounded,
+                    title: "Clasifica la Situación",
+                    subtitle: "Amenaza, protección o error",
+                    badge: "Match",
+                    record: bestMatch,
+                    gradient: const [
+                      Color(0xFF10B981),
+                      Color(0xFF06B6D4),
+                    ],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const MatchScreen()),
+                      );
+                      if (mounted) setState(() {});
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  _gameCard(
+                    context,
+                    icon: Icons.psychology_rounded,
+                    title: "Ahorcado",
+                    subtitle: "Adivina la palabra antes de perder",
+                    badge: "Word Game",
+                    record: 0,
+                    gradient: const [
+                      Color(0xFF8B5CF6),
+                      Color(0xFF4F46E5),
+                    ],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const HangmanScreen(),
+                        ),
+                      );
+                      if (mounted) setState(() {});
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  _gameCard(
+                    context,
+                    icon: Icons.hub_rounded,
+                    title: "Network Master",
+                    subtitle: "Construye la red arrastrando dispositivos",
+                    badge: "Builder",
+                    record: bestNetworkMaster,
+                    gradient: const [
+                      Color(0xFFF59E0B),
+                      Color(0xFFEF4444),
+                    ],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const NetworkMasterScreen(),
+                        ),
+                      );
+                      if (mounted) setState(() {});
+                    },
+                  ),
+                ],
+              ),
             ),
-
-            const SizedBox(height: 14),
-
-            /// JUEGO 2
-            _gameCard(
-              context,
-              icon: Icons.category_rounded,
-              title: "Juego 2: Clasifica la Situación",
-              subtitle: "AMENAZA / PROTECCIÓN / ERROR",
-              record: bestMatch,
-              gradient: const [Color(0xFF22C55E), Color(0xFF06B6D4)],
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MatchScreen()),
-                );
-                if (mounted) setState(() {});
-              },
-            ),
-
-            const SizedBox(height: 14),
-
-            /// ✅ JUEGO 3 - AHORCADO
-            _gameCard(
-              context,
-              icon: Icons.psychology_rounded,
-              title: "Juego 3: Ahorcado",
-              subtitle: "Adivina la palabra antes de perder",
-              record: 0, // puedes luego guardar récord si quieres
-              gradient: const [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const HangmanScreen()),
-                );
-                if (mounted) setState(() {});
-              },
-            ),
-
-            const SizedBox(height: 14),
-
-            /// ✅ JUEGO 4 - NETWORK MASTER
-            _gameCard(
-              context,
-              icon: Icons.hub_rounded,
-              title: "Juego 4: Network Master",
-              subtitle: "Arrastra dispositivos y construye la red",
-              record: bestNetworkMaster,
-              gradient: const [Color(0xFFF59E0B), Color(0xFFEF4444)],
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const NetworkMasterScreen()),
-                );
-                if (mounted) setState(() {});
-              },
-            ),
-
-            const Spacer(),
-
+            const SizedBox(height: 8),
             Text(
-              "Tip: si te equivocas, no pasa nada. Aprende jugando 😄",
+              "Aprende jugando y mejora tus récords en cada reto.",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.black45,
-                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF64748B),
+                    fontWeight: FontWeight.w700,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -131,29 +158,70 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _stats(BuildContext context) {
+    final totalRecords = bestQuiz + bestMatch + bestNetworkMaster;
+
     return Card(
+      elevation: 0,
+      color: Colors.transparent,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: Colors.black12),
-          color: Colors.white.withOpacity(0.85),
+          borderRadius: BorderRadius.circular(28),
+          color: Colors.white.withOpacity(0.88),
         ),
-        child: Row(
+        child: Column(
           children: [
-            _statChip(context,
-                icon: Icons.trending_up_rounded,
-                label: "Nivel",
-                value: "$level"),
-            const SizedBox(width: 10),
-            _statChip(context,
-                icon: Icons.bolt_rounded, label: "XP", value: "$xp"),
-            const SizedBox(width: 10),
-            _statChip(
-              context,
-              icon: Icons.emoji_events_rounded,
-              label: "Récords",
-              value: "${bestQuiz + bestMatch + bestNetworkMaster}",
+            Row(
+              children: [
+                Text(
+                  "Panel del jugador",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: const Color(0xFF0F172A),
+                      ),
+                ),
+                const Spacer(),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                    color: const Color(0xFFEEF2FF),
+                  ),
+                  child: Text(
+                    "Activo",
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFF4F46E5),
+                          fontWeight: FontWeight.w900,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                _statChip(
+                  context,
+                  icon: Icons.trending_up_rounded,
+                  label: "Nivel",
+                  value: "$level",
+                ),
+                const SizedBox(width: 10),
+                _statChip(
+                  context,
+                  icon: Icons.bolt_rounded,
+                  label: "XP",
+                  value: "$xp",
+                ),
+                const SizedBox(width: 10),
+                _statChip(
+                  context,
+                  icon: Icons.emoji_events_rounded,
+                  label: "Récords",
+                  value: "$totalRecords",
+                ),
+              ],
             ),
           ],
         ),
@@ -161,37 +229,39 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget _statChip(BuildContext context,
-      {required IconData icon, required String label, required String value}) {
+  Widget _statChip(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          color: Colors.white,
-          border: Border.all(color: Colors.black12),
+          borderRadius: BorderRadius.circular(22),
+          color: const Color(0xFFF8FAFC),
+          border: Border.all(color: const Color(0x140F172A)),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                Text(
-                  value,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                ),
-              ],
+            Icon(icon, size: 18, color: const Color(0xFF4F46E5)),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF475569),
+                  ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              value,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: const Color(0xFF0F172A),
+                  ),
             ),
           ],
         ),
@@ -204,16 +274,17 @@ class _MenuScreenState extends State<MenuScreen> {
     required IconData icon,
     required String title,
     required String subtitle,
+    required String badge,
     required int record,
     required List<Color> gradient,
     required VoidCallback onTap,
   }) {
     return InkWell(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(30),
       onTap: onTap,
-      child: Container(
+      child: Ink(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(30),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -221,65 +292,154 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 18,
-              offset: const Offset(0, 10),
+              color: gradient.first.withOpacity(0.22),
+              blurRadius: 26,
+              offset: const Offset(0, 16),
             ),
           ],
         ),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.25)),
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: Colors.white.withOpacity(0.18)),
           ),
-          child: Row(
+          child: Column(
             children: [
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Icon(icon, color: Colors.white, size: 30),
+              Row(
+                children: [
+                  Container(
+                    width: 62,
+                    height: 62,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.78),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white24),
+                    ),
+                    child: Icon(
+                      icon,
+                      color: const Color(0xFF0F172A),
+                      size: 32,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            color: Colors.white.withOpacity(0.82),
+                          ),
+                          child: Text(
+                            badge,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: const Color(0xFF0F172A),
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 0.4,
+                                    ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          title,
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    color: const Color(0xFF0F172A),
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          subtitle,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: const Color(0xFF334155),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Color(0xFF0F172A),
+                    size: 24,
+                  ),
+                ],
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                          ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white.withOpacity(0.9),
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "🏆 Récord: $record",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white.withOpacity(0.92),
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  _miniInfo(
+                    context,
+                    icon: Icons.emoji_events_rounded,
+                    label: "Récord",
+                    value: "$record",
+                  ),
+                  const SizedBox(width: 10),
+                  _miniInfo(
+                    context,
+                    icon: Icons.sports_esports_rounded,
+                    label: "Modo",
+                    value: badge,
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              Icon(Icons.arrow_forward_ios_rounded,
-                  color: Colors.white.withOpacity(0.95), size: 18),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _miniInfo(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white.withOpacity(0.78),
+          border: Border.all(color: Colors.white24),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: const Color(0xFF0F172A), size: 18),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFF475569),
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
+                  Text(
+                    value,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF0F172A),
+                          fontWeight: FontWeight.w900,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

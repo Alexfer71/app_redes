@@ -26,6 +26,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1   # 👈 agregado
 
 flutter:
 
@@ -43,3 +44,9 @@ flutter:
     # Assets del juego Network Master
     - assets/network_master/images/
     - assets/network_master/sounds/
+
+# 👇 ESTO VA FUERA DE "flutter"
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"

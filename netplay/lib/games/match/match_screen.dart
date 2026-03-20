@@ -91,13 +91,16 @@ class _MatchScreenState extends State<MatchScreen> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(26),
+          ),
           title: Text(title),
           content: Text(subtitle),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // dialog
-                Navigator.pop(this.context); // vuelve al menú
+                Navigator.pop(context);
+                Navigator.pop(this.context);
               },
               child: const Text("Menú"),
             ),
@@ -126,25 +129,239 @@ class _MatchScreenState extends State<MatchScreen> {
     );
   }
 
-  Widget _chip(BuildContext context, String text, IconData icon) {
+  Widget _hudChip(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required IconData icon,
+    required Color tint,
+  }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.88),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.black12),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0x140F172A)),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x120F172A),
+              blurRadius: 12,
+              offset: Offset(0, 6),
+            ),
+          ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: tint.withOpacity(0.12),
+              ),
+              child: Icon(icon, size: 16, color: tint),
+            ),
             const SizedBox(width: 8),
-            Text(
-              text,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFF64748B),
+                        ),
                   ),
+                  Text(
+                    value,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: const Color(0xFF0F172A),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _topHero(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF0F172A),
+            Color(0xFF1E293B),
+          ],
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x220F172A),
+            blurRadius: 18,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.white.withOpacity(0.10),
+              border: Border.all(color: Colors.white24),
+            ),
+            child: const Icon(
+              Icons.category_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Clasifica la Situación",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Analiza cada caso y decide si es una amenaza, una protección o un error.",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white.withOpacity(0.85),
+                        fontWeight: FontWeight.w700,
+                        height: 1.25,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _modeBadge(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(999),
+        color: const Color(0xFFEEF2FF),
+        border: Border.all(color: const Color(0x224F46E5)),
+      ),
+      child: Text(
+        "MATCH MODE",
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: const Color(0xFF4F46E5),
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.7,
+            ),
+      ),
+    );
+  }
+
+  Widget _caseCard(
+    BuildContext context,
+    Map<String, String> current,
+    int safeIndex,
+  ) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 220),
+      child: Container(
+        key: ValueKey(safeIndex),
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFFFFFFF),
+              Color(0xFFF8FAFC),
+            ],
+          ),
+          border: Border.all(color: const Color(0x140F172A)),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x140F172A),
+              blurRadius: 18,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: 66,
+              height: 66,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFFEEF2FF), Color(0xFFE0F2FE)],
+                ),
+              ),
+              child: const Icon(
+                Icons.lightbulb_rounded,
+                size: 32,
+                color: Color(0xFF4F46E5),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              "Situación actual",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: const Color(0xFF64748B),
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.5,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              current["text"]!,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: const Color(0xFF0F172A),
+                    height: 1.25,
+                  ),
+            ),
+            const SizedBox(height: 14),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                color: const Color(0xFFF8FAFC),
+                border: Border.all(color: const Color(0x120F172A)),
+              ),
+              child: Text(
+                "Elige la categoría correcta para avanzar al siguiente reto.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: const Color(0xFF475569),
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
             ),
           ],
         ),
@@ -153,55 +370,69 @@ class _MatchScreenState extends State<MatchScreen> {
   }
 
   Widget _selectBtn({
+    required BuildContext context,
     required String text,
+    required String subtitle,
     required IconData icon,
     required List<Color> gradient,
   }) {
     final disabled = _locked;
 
-    return Expanded(
-      child: AnimatedOpacity(
-        opacity: disabled ? 0.55 : 1,
-        duration: const Duration(milliseconds: 160),
+    return AnimatedOpacity(
+      opacity: disabled ? 0.55 : 1,
+      duration: const Duration(milliseconds: 160),
+      child: Material(
+        color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(22),
           onTap: disabled ? null : () => _check(text),
           child: Container(
-            height: 76,
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(22),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: gradient,
               ),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.10),
+                  color: Color(0x1A0F172A),
                   blurRadius: 16,
-                  offset: const Offset(0, 10),
+                  offset: Offset(0, 8),
                 ),
               ],
             ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon, color: Colors.white, size: 20),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      text,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
+            child: Row(
+              children: [
+                Icon(icon, color: Colors.white, size: 22),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        text,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
+                      const SizedBox(height: 3),
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -216,8 +447,21 @@ class _MatchScreenState extends State<MatchScreen> {
     final progress = (safeIndex + 1) / cases.length;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text("Clasifica la Situación"),
+        backgroundColor: const Color(0xFFF8FAFC),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: Colors.transparent,
+        title: const Text(
+          "Clasifica la Situación",
+          style: TextStyle(
+            color: Color(0xFF0F172A),
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Color(0xFF0F172A)),
         actions: [
           IconButton(
             tooltip: "Inicio",
@@ -228,89 +472,88 @@ class _MatchScreenState extends State<MatchScreen> {
         ],
       ),
       body: AppBackground(
-        padding: const EdgeInsets.all(18),
-        child: Column(
+        padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
+        child: ListView(
           children: [
+            _topHero(context),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                _modeBadge(context),
+                const Spacer(),
+                Text(
+                  "Caso ${safeIndex + 1} de ${cases.length}",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: const Color(0xFF64748B),
+                        fontWeight: FontWeight.w900,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(999),
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 10,
-                backgroundColor: Colors.black12,
+                backgroundColor: const Color(0x1A0F172A),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             Row(
               children: [
-                _chip(context, "$lives", Icons.favorite_rounded),
-                const SizedBox(width: 10),
-                _chip(context, "$score", Icons.star_rounded),
-                const SizedBox(width: 10),
-                _chip(context, "${safeIndex + 1}/${cases.length}", Icons.flag_rounded),
-              ],
-            ),
-            const SizedBox(height: 18),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 220),
-                child: Card(
-                  key: ValueKey(safeIndex),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      border: Border.all(color: Colors.black12),
-                      color: Colors.white.withOpacity(0.88),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.lightbulb_rounded, size: 34),
-                        const SizedBox(height: 12),
-                        Text(
-                          current["text"]!,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w900,
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Elige la categoría correcta.",
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
+                _hudChip(
+                  context,
+                  label: "Vidas",
+                  value: "$lives",
+                  icon: Icons.favorite_rounded,
+                  tint: const Color(0xFFEF4444),
                 ),
-              ),
-            ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                _selectBtn(
-                  text: "PROTECCIÓN",
-                  icon: Icons.verified_user_rounded,
-                  gradient: const [Color(0xFF22C55E), Color(0xFF16A34A)],
+                const SizedBox(width: 8),
+                _hudChip(
+                  context,
+                  label: "Puntos",
+                  value: "$score",
+                  icon: Icons.star_rounded,
+                  tint: const Color(0xFFF59E0B),
                 ),
-                const SizedBox(width: 10),
-                _selectBtn(
-                  text: "AMENAZA",
-                  icon: Icons.warning_rounded,
-                  gradient: const [Color(0xFFF59E0B), Color(0xFFEF4444)],
-                ),
-                const SizedBox(width: 10),
-                _selectBtn(
-                  text: "ERROR",
-                  icon: Icons.bug_report_rounded,
-                  gradient: const [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                const SizedBox(width: 8),
+                _hudChip(
+                  context,
+                  label: "Progreso",
+                  value: "${safeIndex + 1}/${cases.length}",
+                  icon: Icons.flag_rounded,
+                  tint: const Color(0xFF4F46E5),
                 ),
               ],
             ),
+            const SizedBox(height: 14),
+            _caseCard(context, current, safeIndex),
+            const SizedBox(height: 14),
+            _selectBtn(
+              context: context,
+              text: "PROTECCIÓN",
+              subtitle: "Defensa y prevención",
+              icon: Icons.verified_user_rounded,
+              gradient: const [Color(0xFF22C55E), Color(0xFF16A34A)],
+            ),
+            const SizedBox(height: 10),
+            _selectBtn(
+              context: context,
+              text: "AMENAZA",
+              subtitle: "Riesgo o ataque",
+              icon: Icons.warning_rounded,
+              gradient: const [Color(0xFFF59E0B), Color(0xFFEF4444)],
+            ),
+            const SizedBox(height: 10),
+            _selectBtn(
+              context: context,
+              text: "ERROR",
+              subtitle: "Falla o mala acción",
+              icon: Icons.bug_report_rounded,
+              gradient: const [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+            ),
+            const SizedBox(height: 24),
           ],
         ),
       ),
